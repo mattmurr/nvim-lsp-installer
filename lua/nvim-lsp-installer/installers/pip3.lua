@@ -72,7 +72,9 @@ end
 
 function M.env(root_dir)
     return {
-        PATH = process.extend_path { path.concat { root_dir, REL_INSTALL_DIR, platform.is_win and "Scripts" or "bin" } },
+        PATH = process.extend_path {
+            path.concat { root_dir, REL_INSTALL_DIR, platform.is_win and "Scripts" or "bin" },
+        },
     }
 end
 
