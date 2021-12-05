@@ -13,7 +13,7 @@ return function(name, root_dir)
             std.git_clone "https://github.com/ansible/ansible-language-server",
             npm.install(),
             npm.run "compile",
-            npm.install(true),
+            npm.install({}, { production = true }),
         },
         default_options = {
             filetypes = { "yaml", "yaml.ansible" },

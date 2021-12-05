@@ -4,12 +4,11 @@ local std = require "nvim-lsp-installer.installers.std"
 local context = require "nvim-lsp-installer.installers.context"
 local Data = require "nvim-lsp-installer.data"
 local platform = require "nvim-lsp-installer.platform"
+local process = require "nvim-lsp-installer.process"
 
 local coalesce, when = Data.coalesce, Data.when
 
 return function(name, root_dir)
-    local script_name = platform.is_win and "ltex-ls.bat" or "ltex-ls"
-
     return server.Server:new {
         name = name,
         root_dir = root_dir,
@@ -25,7 +24,6 @@ return function(name, root_dir)
             end),
             context.capture(function(ctx)
                 if platform.is_win then
-                    -- todo strip components unzip
                     return std.unzip_remote(ctx.github_release_file)
                 else
                     return std.untargz_remote(ctx.github_release_file)
@@ -36,7 +34,9 @@ return function(name, root_dir)
             end),
         },
         default_options = {
-            cmd = { path.concat { root_dir, "ltex-ls", "bin", script_name } },
+            cmd_env = {
+                PATH = process.extend_path(path.concat { root_dir, "ltex-ls", "bin" }),
+            },
         },
     }
 end
