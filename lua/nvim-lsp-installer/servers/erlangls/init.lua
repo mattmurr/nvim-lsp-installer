@@ -6,6 +6,8 @@ local context = require "nvim-lsp-installer.installers.context"
 local platform = require "nvim-lsp-installer.platform"
 
 return function(name, root_dir)
+    local rebar3 = platform.is_win and "rebar3.cmd" or "rebar3"
+
     return server.Server:new {
         name = name,
         root_dir = root_dir,
@@ -13,7 +15,7 @@ return function(name, root_dir)
         homepage = "https://erlang-ls.github.io/",
         installer = {
             std.ensure_executables {
-                { "rebar3", "rebar3 was not found in path. Refer to http://rebar3.org/docs/." },
+                { rebar3, ("%s was not found in path. Refer to http://rebar3.org/docs/."):format(rebar3) },
             },
             context.use_github_release "erlang-ls/erlang_ls",
             std.git_clone "https://github.com/erlang-ls/erlang_ls.git",
@@ -22,7 +24,6 @@ return function(name, root_dir)
                     cwd = ctx.install_dir,
                     stdio_sink = ctx.stdio_sink,
                 }
-                local rebar3 = platform.is_win and "rebar3.cmd" or "rebar3"
                 c.run(rebar3, { "escriptize" })
                 c.run(rebar3, { "as", "dap", "escriptize" })
                 c.spawn(callback)
