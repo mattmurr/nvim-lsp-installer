@@ -33,8 +33,8 @@ return function(name, root_dir)
             end,
         },
         default_options = {
-            cmd = {
-                path.concat { root_dir, "csharp-ls" },
+            cmd_env = {
+                PATH = process.extend_path { root_dir },
             },
         },
     }

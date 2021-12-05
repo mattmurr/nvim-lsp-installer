@@ -8,7 +8,7 @@ return function(name, root_dir)
         homepage = "https://github.com/jdbaldry/jsonnet-language-server",
         installer = go.packages { "github.com/jdbaldry/jsonnet-language-server" },
         default_options = {
-            cmd = { go.executable(root_dir, "jsonnet-language-server") },
+            cmd_env = go.env(root_dir),
         },
     }
 end

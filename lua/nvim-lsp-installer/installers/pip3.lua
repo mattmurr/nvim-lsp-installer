@@ -70,6 +70,7 @@ function M.executable(root_dir, executable)
     return path.concat { root_dir, REL_INSTALL_DIR, platform.is_win and "Scripts" or "bin", executable }
 end
 
+---@param root_dir string @The directory to resolve the executable from.
 function M.env(root_dir)
     return {
         PATH = process.extend_path {

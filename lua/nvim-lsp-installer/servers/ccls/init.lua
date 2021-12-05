@@ -90,7 +90,9 @@ return function(name, root_dir)
             },
         },
         default_options = {
-            cmd = { path.concat { root_dir, "ccls", "Release", "ccls" } },
+            cmd_env = {
+                PATH = process.extend_path { path.concat { root_dir, "ccls", "Release" } },
+            },
         },
     }
 end

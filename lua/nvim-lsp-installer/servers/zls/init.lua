@@ -4,6 +4,7 @@ local platform = require "nvim-lsp-installer.platform"
 local Data = require "nvim-lsp-installer.data"
 local context = require "nvim-lsp-installer.installers.context"
 local std = require "nvim-lsp-installer.installers.std"
+local process = require "nvim-lsp-installer.process"
 
 local coalesce, when = Data.coalesce, Data.when
 
@@ -30,7 +31,9 @@ return function(name, root_dir)
             std.rename(archive_name, "package"),
         },
         default_options = {
-            cmd = { path.concat { root_dir, "package", "zls" } },
+            cmd_env = {
+                PATH = process.extend_path { path.concat { root_dir, "package" } },
+            },
         },
     }
 end
