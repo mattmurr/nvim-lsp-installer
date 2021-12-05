@@ -5,17 +5,19 @@ local std = require "nvim-lsp-installer.installers.std"
 local context = require "nvim-lsp-installer.installers.context"
 local process = require "nvim-lsp-installer.process"
 
-local os = Data.coalesce(
-    Data.when(platform.is_mac, "darwin"),
-    Data.when(platform.is_linux, "linux"),
-    Data.when(platform.is_win, "windows")
-)
-
-local arch = Data.coalesce(Data.when(platform.arch == "x64", "amd64"), platform.arch)
-
-local target = ("tflint_%s_%s.zip"):format(os, arch)
+local coalesce, when = Data.coalesce, Data.when
 
 return function(name, root_dir)
+    local os = coalesce(
+        when(platform.is_mac, "darwin"),
+        when(platform.is_linux, "linux"),
+        when(platform.is_win, "windows")
+    )
+
+    local arch = coalesce(when(platform.arch == "x64", "amd64"), platform.arch)
+
+    local target = ("tflint_%s_%s.zip"):format(os, arch)
+
     return server.Server:new {
         name = name,
         root_dir = root_dir,

@@ -43,6 +43,7 @@ return function(name, root_dir)
                 return std.untarxz_remote(ctx.github_release_file)
             end
         end),
+        std.rename("llvm12.0", "llvm"),
     }
 
     return server.Server:new {
@@ -58,7 +59,7 @@ return function(name, root_dir)
             cmd_env = {
                 PATH = process.extend_path {
                     path.concat { root_dir },
-                    path.concat { root_dir, "llvm12.0", "bin" },
+                    path.concat { root_dir, "llvm", "bin" },
                 },
             },
         },
