@@ -13,6 +13,9 @@ return {
   bicep = {
     filetypes = { "bicep" }
   },
+  ccls = {
+    filetypes = { "c", "cpp", "objc", "objcpp" }
+  },
   clangd = {
     filetypes = { "c", "cpp", "objc", "objcpp" }
   },
@@ -24,6 +27,9 @@ return {
   },
   codeqlls = {
     filetypes = { "ql" }
+  },
+  csharp_ls = {
+    filetypes = { "cs" }
   },
   cssls = {
     filetypes = { "css", "scss", "less" }
@@ -203,7 +209,7 @@ return {
     filetypes = { "vue" }
   },
   yamlls = {
-    filetypes = { "yaml" }
+    filetypes = { "yaml", "yaml.docker-compose" }
   },
   zls = {
     filetypes = { "zig", "zir" }

@@ -7,8 +7,8 @@ return function(name, root_dir)
     return server.Server:new {
         name = name,
         root_dir = root_dir,
-        languages = { "f#" },
-        homepage = "https://github.com/fsharp/FsAutoComplete",
+        languages = { "c#" },
+        homepage = "https://github.com/razzmatazz/csharp-language-server",
         installer = {
             std.ensure_executables {
                 {
@@ -19,12 +19,12 @@ return function(name, root_dir)
             ---@type ServerInstallerFunction
             function(_, callback, ctx)
                 process.spawn("dotnet", {
-                    args = { "tool", "update", "--tool-path", ".", "fsautocomplete" },
+                    args = { "tool", "update", "--tool-path", ".", "csharp-ls" },
                     cwd = ctx.install_dir,
                     stdio_sink = ctx.stdio_sink,
                 }, function(success)
                     if not success then
-                        ctx.stdio_sink.stderr "Failed to install fsautocomplete.\n"
+                        ctx.stdio_sink.stderr "Failed to install csharp-ls.\n"
                         callback(false)
                     else
                         callback(true)
@@ -34,8 +34,7 @@ return function(name, root_dir)
         },
         default_options = {
             cmd = {
-                path.concat { root_dir, "fsautocomplete" },
-                "--background-service-enabled",
+                path.concat { root_dir, "csharp-ls" },
             },
         },
     }
