@@ -4,6 +4,7 @@ local platform = require "nvim-lsp-installer.platform"
 local Data = require "nvim-lsp-installer.data"
 local std = require "nvim-lsp-installer.installers.std"
 local context = require "nvim-lsp-installer.installers.context"
+local process = require "nvim-lsp-installer.process"
 
 return function(name, root_dir)
     local bin_dir = Data.coalesce(
@@ -31,7 +32,11 @@ return function(name, root_dir)
             ),
         },
         default_options = {
-            cmd = { path.concat { root_dir, "extension", "server", "bin", bin_dir, "lua-language-server" } },
+            cmd_env = {
+                PATH = process.extend_path {
+                    path.concat { root_dir, "extension", "server", "bin", bin_dir },
+                },
+            },
         },
     }
 end

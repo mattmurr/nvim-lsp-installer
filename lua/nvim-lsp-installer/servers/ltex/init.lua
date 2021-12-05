@@ -35,7 +35,7 @@ return function(name, root_dir)
         },
         default_options = {
             cmd_env = {
-                PATH = process.extend_path(path.concat { root_dir, "ltex-ls", "bin" }),
+                PATH = process.extend_path { path.concat { root_dir, "ltex-ls", "bin" } },
             },
         },
     }
