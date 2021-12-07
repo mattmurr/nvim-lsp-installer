@@ -1,6 +1,7 @@
 -- THIS FILE IS GENERATED. DO NOT EDIT MANUALLY.
 -- stylua: ignore start
 return {
+  arduino = { "arduino_language_server" },
   aspnetcorerazor = { "tailwindcss" },
   astro = { "tailwindcss" },
   ["astro-markdown"] = { "tailwindcss" },
@@ -43,7 +44,7 @@ return {
   ["html-eex"] = { "tailwindcss" },
   jade = { "tailwindcss" },
   java = { "jdtls" },
-  javascript = { "denols", "ember", "eslint", "rome", "stylelint_lsp", "tailwindcss", "tsserver" },
+  javascript = { "denols", "ember", "eslint", "quick_lint_js", "rome", "stylelint_lsp", "tailwindcss", "tsserver" },
   ["javascript.jsx"] = { "denols", "eslint", "tsserver" },
   javascriptreact = { "denols", "eslint", "graphql", "rome", "stylelint_lsp", "tailwindcss", "tsserver" },
   json = { "jsonls", "rome" },

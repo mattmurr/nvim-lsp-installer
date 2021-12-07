@@ -7,6 +7,9 @@ return {
   ansiblels = {
     filetypes = { "yaml", "yaml.ansible" }
   },
+  arduino_language_server = {
+    filetypes = { "arduino" }
+  },
   bashls = {
     filetypes = { "sh" }
   },
@@ -144,6 +147,9 @@ return {
   },
   pyright = {
     filetypes = { "python" }
+  },
+  quick_lint_js = {
+    filetypes = { "javascript" }
   },
   rescriptls = {
     filetypes = { "rescript" }
