@@ -6,7 +6,7 @@ local std = require "nvim-lsp-installer.installers.std"
 local platform = require "nvim-lsp-installer.platform"
 local process = require "nvim-lsp-installer.process"
 
-local list_copy, list_not_nil, when = Data.list_copy, Data.list_not_nil, Data.when
+local list_copy = Data.list_copy
 
 local M = {}
 
@@ -26,31 +26,30 @@ local function ensure_npm(installer)
     }
 end
 
-local function create_installer(read_version_from_context)
-    ---@alias NpmInstallerOpts {production:boolean}
-
+---@param standalone boolean @If true, will run `npm install` as a standalone command, with no consideration to the surrounding installer context (i.e. the requested version in context is ignored, global-style is not applied).
+local function create_installer(standalone)
     ---@param packages string[]
-    ---@param opts NpmInstallerOpts
-    return function(packages, opts)
+    return function(packages)
         return ensure_npm(
             ---@type ServerInstallerFunction
             function(_, callback, ctx)
-                opts = opts or {}
                 local pkgs = list_copy(packages or {})
                 local c = process.chain {
                     cwd = ctx.install_dir,
                     stdio_sink = ctx.stdio_sink,
                 }
 
-                -- Use global-style. The reasons for this are:
-                --   a) To avoid polluting the executables (aka bin-links) that npm creates.
-                --   b) The installation is, after all, more similar to a "global" installation. We don't really gain
-                --      any of the benefits of not using global style (e.g., deduping the dependency tree).
-                --
-                --  We write to .npmrc manually instead of going through npm because managing a local .npmrc file
-                --  is a bit unreliable across npm versions (especially <7), so we take extra measures to avoid
-                --  inadvertently polluting global npm config.
-                fs.append_file(path.concat { ctx.install_dir, ".npmrc" }, "global-style=true")
+                if not standalone then
+                    -- Use global-style. The reasons for this are:
+                    --   a) To avoid polluting the executables (aka bin-links) that npm creates.
+                    --   b) The installation is, after all, more similar to a "global" installation. We don't really gain
+                    --      any of the benefits of not using global style (e.g., deduping the dependency tree).
+                    --
+                    --  We write to .npmrc manually instead of going through npm because managing a local .npmrc file
+                    --  is a bit unreliable across npm versions (especially <7), so we take extra measures to avoid
+                    --  inadvertently polluting global npm config.
+                    fs.append_file(path.concat { ctx.install_dir, ".npmrc" }, "global-style=true")
+                end
 
                 -- stylua: ignore start
                 if not (fs.dir_exists(path.concat { ctx.install_dir, "node_modules" }) or
@@ -60,19 +59,13 @@ local function create_installer(read_version_from_context)
                     c.run(npm, { "init", "--yes", "--scope=lsp-installer" })
                 end
 
-                if read_version_from_context and ctx.requested_server_version and #pkgs > 0 then
+                if not standalone and ctx.requested_server_version and #pkgs > 0 then
                     -- The "head" package is the recipient for the requested version. It's.. by design... don't ask.
                     pkgs[1] = ("%s@%s"):format(pkgs[1], ctx.requested_server_version)
                 end
 
-                local flags = list_not_nil(
-                    when(opts.production, "--production")
-                )
-
-                local install_args = vim.list_extend(flags, pkgs)
-
                 -- stylua: ignore end
-                c.run(npm, vim.list_extend({ "install" }, install_args))
+                c.run(npm, vim.list_extend({ "install" }, pkgs))
                 c.spawn(callback)
             end
         )
@@ -80,11 +73,11 @@ local function create_installer(read_version_from_context)
 end
 
 ---Creates an installer that installs the provided packages. Will respect user's requested version.
-M.packages = create_installer(true)
+M.packages = create_installer(false)
 
 ---Creates an installer that installs the provided packages. Will NOT respect user's requested version.
 ---This is useful in situation where there's a need to install an auxiliary npm package.
-M.install = create_installer(false)
+M.install = create_installer(true)
 
 ---Creates a server installer that executes the given executable.
 ---@param executable string
