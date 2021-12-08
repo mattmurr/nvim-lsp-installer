@@ -148,6 +148,7 @@ lsp_installer.settings({
 | Angular                             | `angularls`               |
 | Ansible                             | `ansiblels`               |
 | Arduino                             | `arduino_language_server` |
+| AsyncAPI                            | `spectral`                |
 | Bash                                | `bashls`                  |
 | Bicep                               | `bicep`                   |
 | C                                   | `ccls`                    |
@@ -182,8 +183,8 @@ lsp_installer.settings({
 | Haskell                             | `hls`                     |
 | JSON                                | `jsonls`                  |
 | Java                                | `jdtls`                   |
-| JavaScript                          | `tsserver`                |
 | JavaScript                          | `quick_lint_js`           |
+| JavaScript                          | `tsserver`                |
 | Jsonnet                             | `jsonnet_ls`              |
 | Kotlin                              | `kotlin_language_server`  |
 | LaTeX                               | `ltex`                    |
@@ -191,6 +192,7 @@ lsp_installer.settings({
 | Lua                                 | `sumneko_lua`             |
 | OCaml                               | `ocamlls`                 |
 | Objective C                         | `ccls`                    |
+| OpenAPI                             | `spectral`                |
 | PHP                                 | `intelephense`            |
 | PHP                                 | `phpactor`                |
 | Powershell                          | `powershell_es`           |
@@ -198,12 +200,12 @@ lsp_installer.settings({
 | Puppet                              | `puppet`                  |
 | PureScript                          | `purescriptls`            |
 | Python                              | `jedi_language_server`    |
-| Python                              | `pylsp`                   |
+| Python [(docs)][pylsp]              | `pylsp`                   |
 | Python                              | `pyright`                 |
 | ReScript                            | `rescriptls`              |
 | Rome                                | `rome`                    |
 | Ruby                                | `solargraph`              |
-| Rust                                | `rust_analyzer`           |
+| Rust [(wiki)][rust_analyzer]        | `rust_analyzer`           |
 | SQL                                 | `sqlls`                   |
 | SQL                                 | `sqls`                    |
 | Solang Solidity                     | `solang`                  |
@@ -226,6 +228,8 @@ lsp_installer.settings({
 [eslint]: ./lua/nvim-lsp-installer/servers/eslint/README.md
 [tflint]: ./lua/nvim-lsp-installer/servers/tflint/README.md
 [tsserver]: ./lua/nvim-lsp-installer/servers/tsserver/README.md
+[pylsp]: ./lua/nvim-lsp-installer/servers/pylsp/README.md
+[rust_analyzer]: https://github.com/williamboman/nvim-lsp-installer/wiki/Rust
 
 ## Custom servers
 
