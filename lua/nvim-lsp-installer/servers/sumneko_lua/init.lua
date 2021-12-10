@@ -29,7 +29,11 @@ return function(name, root_dir)
                 popd
                 ./3rd/luamake/luamake rebuild
                 ]],
-            }
+            },
+            std.chmod(
+                "+x",
+                { path.concat { root_dir, "bin", bin_dir, "lua-language-server" } }
+            ),
         },
         default_options = {
             cmd = { path.concat { root_dir, "bin", bin_dir, "lua-language-server" } },
