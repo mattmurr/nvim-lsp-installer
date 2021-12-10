@@ -18,7 +18,7 @@ return function(name, root_dir)
         name = name,
         root_dir = root_dir,
         languages = { "lua" },
-        homepage = "",
+        homepage = "https://github.com/sumneko/lua-language-server",
         installer = {
             std.git_clone "https://github.com/sumneko/lua-language-server",
             std.git_submodule_update(),
@@ -32,7 +32,7 @@ return function(name, root_dir)
             }
         },
         default_options = {
-            cmd = { path.concat { root_dir, "lua-language-server", "bin", bin_dir, "lua-language-server" } },
+            cmd = { path.concat { root_dir, "bin", bin_dir, "lua-language-server" } },
         },
     }
 end
