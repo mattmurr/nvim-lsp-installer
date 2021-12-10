@@ -2,8 +2,10 @@ local server = require "nvim-lsp-installer.server"
 local path = require "nvim-lsp-installer.path"
 local platform = require "nvim-lsp-installer.platform"
 local Data = require "nvim-lsp-installer.data"
+local installers = require "nvim-lsp-installer.installers"
 local std = require "nvim-lsp-installer.installers.std"
 local context = require "nvim-lsp-installer.installers.context"
+local shell = require "nvim-lsp-installer.installers.shell"
 
 return function(name, root_dir)
     local bin_dir = Data.coalesce(
@@ -16,22 +18,21 @@ return function(name, root_dir)
         name = name,
         root_dir = root_dir,
         languages = { "lua" },
-        homepage = "https://github.com/sumneko/lua-language-server",
+        homepage = "",
         installer = {
-            context.use_github_release_file("sumneko/vscode-lua", function(version)
-                return ("lua-%s.vsix"):format(version:gsub("^v", ""))
-            end),
-            context.capture(function(ctx)
-                return std.unzip_remote(ctx.github_release_file)
-            end),
-            -- see https://github.com/sumneko/vscode-lua/pull/43
-            std.chmod(
-                "+x",
-                { "extension/server/bin/macOS/lua-language-server", "extension/server/bin/Linux/lua-language-server" }
-            ),
+            std.git_clone "https://github.com/sumneko/lua-language-server",
+            std.git_submodule_update(),
+            installers.on {
+                unix = shell.bash [[
+                pushd 3rd/luamake
+                ./compile/install.sh
+                popd
+                ./3rd/luamake/luamake rebuild
+                ]],
+            }
         },
         default_options = {
-            cmd = { path.concat { root_dir, "extension", "server", "bin", bin_dir, "lua-language-server" } },
+            cmd = { path.concat { root_dir, "lua-language-server", "bin", bin_dir, "lua-language-server" } },
         },
     }
 end
