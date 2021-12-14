@@ -37,6 +37,9 @@ return {
   cssls = {
     filetypes = { "css", "scss", "less" }
   },
+  cssmodules_ls = {
+    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+  },
   dartls = {
     filetypes = { "dart" }
   },
@@ -168,6 +171,9 @@ return {
   },
   solargraph = {
     filetypes = { "ruby" }
+  },
+  solidity_ls = {
+    filetypes = { "solidity" }
   },
   sorbet = {
     filetypes = { "ruby" }
